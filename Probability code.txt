@@ -1,0 +1,98 @@
+import numpy as np
+
+def calculate_probabilities(parameters, data, utilities):
+    probabilities = {}
+
+    for alternative, utility_function in utilities.items():
+        alternative_utilities = np.array([utility_function(parameters, data, i) for i in range(len(data['X1']))])
+        exp_utilities = np.exp(alternative_utilities)
+        sum_exp_utilities = np.sum(exp_utilities)
+        normalized_probabilities = exp_utilities / sum_exp_utilities
+
+        probabilities[alternative] = normalized_probabilities.tolist()
+
+    return probabilities
+
+def v_1(parameters, data, index):
+    return parameters['beta01'] + parameters['beta1'] * data['X1'][index] + parameters['beta2'] * data['X2'][index]
+
+def v_2(parameters, data, index):
+    return parameters['beta02'] + parameters['beta1'] * data['X1'][index] + parameters['beta2'] * data['X2'][index]
+
+def v_3(parameters, data, index):
+    return parameters['beta03'] + parameters['beta1'] * data['X1'][index] + parameters['beta2'] * data['Sero'][index]
+
+data = {
+    'X1': [2, 3, 5, 7, 1, 8, 4, 5, 6, 7],
+    'X2': [1, 5, 3, 8, 2, 7, 5, 9, 4, 2],
+    'Sero': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+}
+
+parameters = {
+    'beta01': 0.1,
+    'beta1': 0.5,
+    'beta2': 0.5,
+    'beta02': 1,
+    'beta03': 0
+}
+
+utilities = {
+    'P1': v_1,
+    'P2': v_2,
+    'P3': v_3
+}
+
+probabilities = calculate_probabilities(parameters, data, utilities)
+
+with open('probabilities.txt', 'w') as file:
+    for alternative, alternative_probabilities in probabilities.items():
+        file.write(f'{alternative}: {alternative_probabilities}\n')
+import numpy as np
+
+def calculate_probabilities(parameters, data, utilities):
+    probabilities = {}
+
+    for alternative, utility_function in utilities.items():
+        alternative_utilities = np.array([utility_function(parameters, data, i) for i in range(len(data['X1']))])
+        exp_utilities = np.exp(alternative_utilities)
+        sum_exp_utilities = np.sum(exp_utilities)
+        normalized_probabilities = exp_utilities / sum_exp_utilities
+
+        probabilities[alternative] = normalized_probabilities.tolist()
+
+    return probabilities
+
+def v_1(parameters, data, index):
+    return parameters['beta01'] + parameters['beta1'] * data['X1'][index] + parameters['beta2'] * data['X2'][index]
+
+def v_2(parameters, data, index):
+    return parameters['beta02'] + parameters['beta1'] * data['X1'][index] + parameters['beta2'] * data['X2'][index]
+
+def v_3(parameters, data, index):
+    return parameters['beta03'] + parameters['beta1'] * data['X1'][index] + parameters['beta2'] * data['Sero'][index]
+
+data = {
+    'X1': [2, 3, 5, 7, 1, 8, 4, 5, 6, 7],
+    'X2': [1, 5, 3, 8, 2, 7, 5, 9, 4, 2],
+    'Sero': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+}
+
+parameters = {
+    'beta01': 0.1,
+    'beta1': 0.5,
+    'beta2': 0.5,
+    'beta02': 1,
+    'beta03': 0
+}
+
+utilities = {
+    'P1': v_1,
+    'P2': v_2,
+    'P3': v_3
+}
+
+probabilities = calculate_probabilities(parameters, data, utilities)
+
+with open('probabilities.txt', 'w') as file:
+    for alternative, alternative_probabilities in probabilities.items():
+        file.write(f'{alternative}: {alternative_probabilities}\n')
